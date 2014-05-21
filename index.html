@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>enchant MapEditor</title>
+        <link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.10.2.custom.min.css" />
+        <link rel="stylesheet" href="css/main.css" />
+        <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.10.2.custom.min.js"></script>
+        <script type="text/javascript" src="enchant.js"></script>
+		<script type="text/javascript" src="plugins/extendMap.enchant.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+        <script type="text/javascript" src="drawing.js"></script>
+        <script type="text/javascript" src="mapeditor.js"></script>
+    </head>
+    <body>
+    	<div>
+		    <div id="toolFrame" class="ui-widget-content ui-corner-all">
+			    <div>
+				    <button id="createButton" title="Create a new map">Create Map</button>
+				    <button id="importButton" title="Import a created map">Import Map</button>
+			    </div>
+
+			    <button id="undo" title="undo"></button>
+		    	<div id="tools" title="tool bar: pen, fill, straight, rectangle">
+			    	<input type="radio" name="tools" id="pen" title="tool: pen"><label for="pen" id="pen"></label>
+			    	<input type="radio" name="tools" id="fill" title="tool: fill"><label for="fill" id="fill"></label>
+			    	<input type="radio" name="tools" id="straight" title="tool: straight"><label for="straight" id="straight"></label>
+			    	<input type="radio" name="tools" id="rect" title="tool: rectangle"><label for="rect" id="rect"></label>
+			    </div>
+
+			    <div>
+				    <canvas id="selectedTile" width="48" height="48" title="selected tile" class="ui-widget-content ui-corner-all"></canvas>
+				</div>
+			    <div>
+				    <button id="erase" title="eraser tile"></button>
+			    </div>
+			    <div>
+			    	<canvas id="palette" width="256" height="256" title="Palette:Please click here to choose a tile to draw" class="ui-widget-content ui-corner-all"></canvas>
+			    </div>
+				<button id="exportButton" title="Export the map">Export Map</button>
+			</div>
+		    <div id="mapFrame" class="ui-widget-content ui-corner-all">
+				<button id="addLayer" title="Add a new layer">Add Layer</button>
+				<div id="layers">
+					<ul>
+						<li><a href="#enchant-stage">collision detection</a></li>
+						<li><a href="#enchant-stage">Layer 0</a></li>
+						<li><a href="#enchant-stage">Layer 1</a><span class="ui-icon ui-icon-close" role="presentation">Remove Layer</span></li>
+					</ul>
+					<div id="enchant-stage" title="Enchant-Stage:Please click here to draw the map"></div>
+				</div>
+		    </div>
+		</div>
+
+		<div id="createDialog" title="Create a new map">
+			<form>
+				<fieldset>
+					<div>
+						<label for="widthBox">Number of tiles for width : </label>
+						<input type="text" name="widthBox" id="widthBox" value="20" title="Please input number of tiles for width of a new map" class="text ui-widget-content ui-corner-all">
+					</div>
+					<div>
+						<label for="heightBox">Number of tiles for height : </label>
+						<input type="text" name="heightBox" id="heightBox" value="20" title="Please input number of tiles for height of a new map" class="text ui-widget-content ui-corner-all">
+					</div>
+					<div>
+						<label for="selectImage">Image : </label>
+					    <select name="selectImage" id="selectImage" title="Please choose RPG or 2D Scroll to load a image file" class="ui-widget-content ui-corner-all">
+					    	<option value="map0.gif">RPG</option>
+					    	<option value="map1.gif">2D Scroll</option>
+					    </select>
+					</div>
+					<div>
+						<label for="checkBox">Enable extendMap Plugin</label>
+						<input type="checkbox" name="checkBox" id="checkBox" checked title="Do you want to enable Map Input Interpolation Algorithm ?" class="ui-widget-content ui-corner-all">
+					</div>
+				</fieldset>
+			</form>
+		</div>
+
+		<div id="importDialog" title="Import a created map">
+			 <p>Please input codes of a created map from your programming.</p>
+			<textarea id="importCode" cols="93" rows="16" wrap="off" class="ui-widget-content ui-corner-all"></textarea>
+		</div>
+		<div id="exportDialog" title="Export the map">
+			 <p>Please copy codes of the map and paste it to your programming.</p>
+			<textarea id="exportCode" cols="93" rows="16" wrap="off" class="ui-widget-content ui-corner-all"></textarea>
+		</div>
+    </body>
+</html>

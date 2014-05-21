@@ -1,0 +1,51 @@
+#toolFrame {
+	float: left;
+}
+#undo {
+	width: 48px;
+	height: 48px;
+	background-image: url(images/undo.png);
+}
+#pen {
+	width: 48px;
+	height: 48px;
+	background-image: url(images/pen.png);
+}
+#fill {
+	width: 48px;
+	height: 48px;
+	background-image: url(images/fill.png);
+}
+#straight {
+	width: 48px;
+	height: 48px;
+	background-image: url(images/straight.png);
+}
+#rect {
+	width: 48px;
+	height: 48px;
+	background-image: url(images/rect.png);
+}
+#selectedChip {
+	width: 48px;
+	height: 48px;
+}
+#erase {
+	width: 48px;
+	height: 48px;
+	background-image: url(images/erase.png);
+}
+#mapFrame {
+	float: left;
+}
+#addLayer { 
+	cursor: pointer; 
+}
+#layers {
+}
+#layers li .ui-icon-close { 
+	float: left; 
+	margin: 0.4em 0.2em 0 0; 
+	cursor: 
+	pointer; 
+}

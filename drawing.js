@@ -134,9 +134,10 @@ enchant.Map.prototype.addData = function(data) {
 };
 
 
-enchant.Map.prototype.getDataCode = function(mapName, imagePath) {
-    var txt = 'var ' + mapName + ' = new Map(16, 16);\n';
-    txt += mapName + ".image = game.assets['" + imagePath + "'];\n"; 
+enchant.Map.prototype.getDataCode = function(mapName, imagePath, extendMode) {
+    var mapClassName = (extendMode) ? 'ExMap' : 'Map';
+    var txt = 'var ' + mapName + ' = new ' + mapClassName +'(16, 16);\n';
+    txt += mapName + ".image = core.assets['" + imagePath + "'];\n"; 
     txt += mapName + '.loadData(';
     for (var i = 0, l = this._data.length; i < l; i++) {
         txt += '[\n'

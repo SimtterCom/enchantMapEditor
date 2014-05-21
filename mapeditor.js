@@ -1,8 +1,7 @@
 function start(mapWidth, mapHeight, gameImage, extend) {
-
-    var game = new Game(640, 480);
-    game.preload('ui_16.png', gameImage);
-    game.onload = function() {
+    core = new Core(mapWidth*16, mapHeight*16);
+    core.preload('ui_16.png', gameImage);
+    core.onload = function() {
 
 		app.storedData = {};
 		app.storedData.bgMap = makeArray(app.mapWidth, app.mapHeight, -1);
@@ -20,8 +19,8 @@ function start(mapWidth, mapHeight, gameImage, extend) {
 			var bgMap = new Map(16, 16);
 			var colMap = new Map(16, 16);
 		}
-		bgMap.image = game.assets[gameImage];
-		colMap.image = game.assets['ui_16.png'];
+		bgMap.image = core.assets[gameImage];
+		colMap.image = core.assets['ui_16.png'];
 		bgMap.loadData(bgArr, bgArr2);
 		colMap.loadData(colArr);
 		colMap.paintNum = 0;
@@ -78,44 +77,29 @@ function start(mapWidth, mapHeight, gameImage, extend) {
 		app.frame = mapFrame;
 		mapFrame.image = frame;
 
-		var bg = new Sprite(640, 480);
-		
-
 		var stage = new Group();
 		stage.addChild(bgMap);
 		stage.addChild(colMap);
 		stage.addChild(mapFrame);
-		game.rootScene.addChild(stage);
-		game.rootScene.addChild(bg);
-		game.rootScene.backgroundColor = '#eee';
+		core.rootScene.addChild(stage);
+		core.rootScene.backgroundColor = '#eee';
 
-		game.addEventListener('leftbuttondown', function() {
-			if (stage.x  <  0) {
-				stage.x += 16;
-			}
-		});
-		game.addEventListener('rightbuttondown', function() {
-			if (stage.x  > 640 - app.mapWidth * 16) {
-				stage.x -= 16;
-			}
-		});
-		game.addEventListener('upbuttondown', function() {
-			if (stage.y < 0) {
-				stage.y += 16;
-			}
-		});
-		game.addEventListener('downbuttondown', function() {
-			if (stage.y > 480 - app.mapHeight * 16) {
-				stage.y -= 16;
-			}
-		});
-
-		var editScene = new Scene();
 		this.sx = 0;
 		this.sy = 0;
-		editScene.addEventListener('touchstart', function(e) {
-			x = Math.floor(e.localX / 16) | 0;
-			y = Math.floor(e.localY / 16) | 0;
+		core.rootScene.addEventListener('touchstart', function(e) {
+			x = e.localX*core.scale + core._pageX;
+			y = e.localY*core.scale + core._pageY;
+			var offsetX = 0, offsetY = 0;
+			var element = e.target._element;
+			while(element) {
+				offsetX += element.offsetLeft;
+				offsetY += element.offsetTop;
+				element = element.offsetParent;
+			}
+			x -= offsetX;
+			y -= offsetY;
+			x = Math.floor(x / 16) | 0;
+			y = Math.floor(y / 16) | 0;
 			x -= Math.floor(stage.x / 16) | 0;
 			y -= Math.floor(stage.y / 16) | 0;
 			if (x >= app.mapWidth || y >= app.mapHeight
@@ -160,9 +144,20 @@ function start(mapWidth, mapHeight, gameImage, extend) {
 			}
 
 		});
-		editScene.addEventListener('touchmove', function(e) {
-			x = Math.floor(e.localX / 16) | 0;
-			y = Math.floor(e.localY / 16) | 0;
+		core.rootScene.addEventListener('touchmove', function(e) {
+			x = e.localX*core.scale + core._pageX;
+			y = e.localY*core.scale + core._pageY;
+			var offsetX = 0, offsetY = 0;
+			var element = e.target._element;
+			while(element) {
+				offsetX += element.offsetLeft;
+				offsetY += element.offsetTop;
+				element = element.offsetParent;
+			}
+			x -= offsetX;
+			y -= offsetY;
+			x = Math.floor(x / 16) | 0;
+			y = Math.floor(y / 16) | 0;
 			x -= Math.floor(stage.x / 16) | 0;
 			y -= Math.floor(stage.y / 16) | 0;
 			if (x >= app.mapWidth || y >= app.mapHeight
@@ -202,46 +197,9 @@ function start(mapWidth, mapHeight, gameImage, extend) {
 				enchant.Map.prototype[app.editFunc + 'Data'].apply(colMap, arg);
 			}
 		});
-
-		game.pushScene(editScene);
-
-		var rectIcon = document.getElementById('rectIcon');
-		rectIcon.func[0] = function() {
-		};
-		rectIcon.func[1] = function() {
-			app.selectedData = -1;
-			app.selectedType = -1;
-			rectIcon.clearMode();
-		};
-		rectIcon.func[2] = function() {
-			app.editFunc = 'change';
-		};
-		rectIcon.func[3] = function() {
-			app.editFunc = 'fill';
-		};
-		rectIcon.func[4] = function() {
-			app.editFunc = 'straight';
-		};
-		rectIcon.func[5] = function() {
-			app.editFunc = 'rect';
-		};
-		rectIcon.func[6] = function() {
-			app.restoreMaps();
-		};
-
-		var addTabButton = document.getElementById('addTabButton');
-		addTabButton.onclick = function() {
-			var tabs = document.getElementById('tabs');
-			bgMap.addData(makeArray(app.mapWidth, app.mapHeight, -1));
-			var num = tabs.childNodes.length - 1;
-			editorTabs.addNewTab('bgtab' + num, 'layer' + num);
-			editorTabs.applyColors();
-		};
-
     };
-    game.start();
+    core.start();
 }
-
 
 function makeArray(width, height, num) {
 	var arr = new Array();
